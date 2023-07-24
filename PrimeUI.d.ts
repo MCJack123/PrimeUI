@@ -1,5 +1,23 @@
 // Uses @jackmacwindows/cc-types types for CC objects.
 
+type BlitImageFrame = [string, string, string][] & {
+    duration?: number,
+    palette?: ([number] | [number, number, number])[]
+};
+type BlitImage = BlitImageFrame[] & {
+    version: string,
+    animated: boolean,
+    author?: string,
+    title?: string,
+    description?: string,
+    creator?: string,
+    date?: string,
+    width?: number,
+    height?: number,
+    secondsPerFrame?: number,
+    palette?: ([number] | [number, number, number])[]
+}
+
 declare namespace PrimeUI {
     /**
      * Adds a task to run in the main loop.
@@ -78,6 +96,19 @@ declare namespace PrimeUI {
      * @param bgColor The color of the background (defaults to black)
      */
     function checkSelectionBox(win: ITerminal, x: number, y: number, width: number, height: number, selections: {[key: string]: boolean | "R"}, action: (() => void) | string, fgColor?: Color, bgColor?: Color): void;
+
+    /**
+     * Draws a BIMG-formatted image to the screen. This does not support transparency,
+     * and does not handle animation on its own (but the index parameter may be
+     * used by apps to implement animation).
+     * @param win The window to draw on
+     * @param x The X position of the top left corner of the image
+     * @param y The Y position of the top left corner of the image
+     * @param data The path to the image to load, or the image data itself
+     * @param index The index of the frame to draw (defaults to 1)
+     * @param setPalette Whether to set the palette if the image contains one (defaults to true)
+     */
+    function drawImage(win: ITerminal, x: number, y: number, data: string | BlitImage, index?: number, setPalette?: boolean): void;
 
     /** Draws a block of text inside a window with word wrapping, optionally resizing the window to fit.
      * @param win The window to draw in
