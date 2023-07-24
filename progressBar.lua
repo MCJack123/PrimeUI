@@ -3,7 +3,6 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 -- Start copying below this line. --
 
 --- Creates a progress bar, which can be updated by calling the returned function.
---- Draws a horizontal line at a position with the specified width.
 ---@param win window The window to draw on
 ---@param x number The X position of the left side of the bar
 ---@param y number The Y position of the bar

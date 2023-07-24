@@ -9,22 +9,22 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param width number The width of the box
 ---@param height number The height of the outer box
 ---@param innerHeight number The height of the inner scroll area
----@param bgColor color|nil The color of the background (defaults to black)
 ---@param allowArrowKeys boolean|nil Whether to allow arrow keys to scroll the box (defaults to true)
 ---@param showScrollIndicators boolean|nil Whether to show arrow indicators on the right side when scrolling is available, which reduces the inner width by 1 (defaults to false)
 ---@param fgColor number|nil The color of scroll indicators (defaults to white)
+---@param bgColor color|nil The color of the background (defaults to black)
 ---@return window inner The inner window to draw inside
-function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, bgColor, allowArrowKeys, showScrollIndicators, fgColor)
+function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys, showScrollIndicators, fgColor, bgColor)
     expect(1, win, "table")
     expect(2, x, "number")
     expect(3, y, "number")
     expect(4, width, "number")
     expect(5, height, "number")
     expect(6, innerHeight, "number")
-    bgColor = expect(7, bgColor, "number", "nil") or colors.black
-    expect(8, allowArrowKeys, "boolean", "nil")
-    expect(9, showScrollIndicators, "boolean", "nil")
-    fgColor = expect(10, fgColor, "number", "nil") or colors.white
+    expect(7, allowArrowKeys, "boolean", "nil")
+    expect(8, showScrollIndicators, "boolean", "nil")
+    fgColor = expect(9, fgColor, "number", "nil") or colors.white
+    bgColor = expect(10, bgColor, "number", "nil") or colors.black
     if allowArrowKeys == nil then allowArrowKeys = true end
     -- Create the outer container box.
     local outer = window.create(win == term and term.current() or win, x, y, width, height)
