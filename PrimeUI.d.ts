@@ -29,7 +29,7 @@ declare namespace PrimeUI {
      * Sends the provided arguments to the run loop, where they will be returned.
      * @param args The parameters to send
      */
-    function resolve(...args: any[]): void;
+    function resolve(...args: any[]): never;
 
     /**
      * Clears the screen and resets all components. Do not use any previously
@@ -82,6 +82,18 @@ declare namespace PrimeUI {
      * @param clickedColor The color of the button when clicked (defaults to gray)
      */
     function button(win: ITerminal, x: number, y: number, text: string, action: (() => void) | string, fgColor?: Color, bgColor?: Color, clickedColor?: Color): void;
+
+    /**
+     * Draws a line of text at a position.
+     * @param win The window to draw on
+     * @param x The X position of the left side of the box
+     * @param y The Y position of the box
+     * @param width The width of the box to draw in
+     * @param text The text to draw
+     * @param fgColor The color of the text (defaults to white)
+     * @param bgColor The color of the background (defaults to black)
+     */
+    function centerLabel(win: ITerminal, x: number, y: number, width: number, text: string, fgColor?: Color, bgColor?: Color): void;
 
     /**
      * Creates a list of entries with toggleable check boxes.
@@ -148,6 +160,16 @@ declare namespace PrimeUI {
     function inputBox(win: ITerminal, x: number, y: number, width: number, action: (() => void) | string, fgColor?: Color, bgColor?: Color, replacement?: string, history?: string[], completion?: (partial: string) => string[], defaultString?: string): void;
 
     /**
+     * Runs a function or action repeatedly after a specified time period until canceled.
+     * If a function is passed as an action, it may return a number to change the
+     * period, or `false` to stop it.
+     * @param time The amount of time to wait for each time, in seconds
+     * @param action The function to call when the timer completes, or a `run` event to send
+     * @return A function to cancel the timer
+     */
+    function interval(time: number, action: (() => number | false | null | undefined | void) | string): () => void;
+
+    /**
      * Adds an action to trigger when a key is pressed.
      * @param key The key to trigger on, from `keys.*`
      * @param action A function to call when clicked, or a string to use as a key for a `run` return event
@@ -167,8 +189,8 @@ declare namespace PrimeUI {
     /**
      * Draws a line of text at a position.
      * @param win The window to draw on
-     * @param x The X position of the left side of the line
-     * @param y The Y position of the line
+     * @param x The X position of the left side of the text
+     * @param y The Y position of the text
      * @param text The text to draw
      * @param fgColor The color of the text (defaults to white)
      * @param bgColor The color of the background (defaults to black)
@@ -232,4 +254,12 @@ declare namespace PrimeUI {
      * @return A function to redraw the window with new contents
      */
     function textBox(win: ITerminal, x: number, y: number, width: number, height: number, text: string, fgColor?: Color, bgColor?: Color): (text: string) => void;
+
+    /**
+     * Runs a function or action after the specified time period, with optional canceling.
+     * @param time The amount of time to wait for, in seconds
+     * @param action The function to call when the timer completes, or a `run` event to send
+     * @returns A function to cancel the timer
+     */
+    function timeout(time: number, action: (() => void) | string): () => void;
 }

@@ -4,8 +4,8 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 
 --- Draws a line of text at a position.
 ---@param win window The window to draw on
----@param x number The X position of the left side of the line
----@param y number The Y position of the line
+---@param x number The X position of the left side of the text
+---@param y number The Y position of the text
 ---@param text string The text to draw
 ---@param fgColor color|nil The color of the text (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
