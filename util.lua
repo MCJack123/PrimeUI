@@ -55,7 +55,7 @@ do
             if not win.getPosition then return x, y end
             local wx, wy = win.getPosition()
             x, y = x + wx - 1, y + wy - 1
-            _, win = debug.getupvalue(win.isColor, 1) -- gets the parent window through an upvalue
+            _, win = debug.getupvalue(select(2, debug.getupvalue(win.isColor, 1)), 1) -- gets the parent window through an upvalue
         end
         return x, y
     end
