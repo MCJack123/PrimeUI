@@ -43,21 +43,38 @@ do
         restoreCursor = win and win.restoreCursor
     end
 
-    --- Gets the absolute position of a coordinate relative to a window.
+    --- Checks if an absolute position is seen by a window
     ---@param win window The window to check
-    ---@param x number The relative X position of the point
-    ---@param y number The relative Y position of the point
-    ---@return number x The absolute X position of the window
-    ---@return number y The absolute Y position of the window
-    function PrimeUI.getWindowPos(win, x, y)
-        if win == term then return x, y end
+    ---@param x number The absolute X position of the point
+    ---@param y number The absolute Y position of the point
+    ---@return boolean Whether the point is in the window
+    function PrimeUI.inVisibleRegion(win, x, y)
+        if win == term then
+            local w, h = win.getSize()
+            return x >= 1 and y >= 1 and x <= w and y <= h
+        end
+
+        -- Retrieve nested windows
+        local parentWindows = {}
         while win ~= term.native() and win ~= term.current() do
-            if not win.getPosition then return x, y end
-            local wx, wy = win.getPosition()
-            x, y = x + wx - 1, y + wy - 1
+            table.insert(parentWindows, win)
             _, win = debug.getupvalue(select(2, debug.getupvalue(win.isColor, 1)), 1) -- gets the parent window through an upvalue
         end
-        return x, y
+
+        -- Starting from root, check if absolute point is within
+        -- each subsequenct window's bounds
+        for i = #parentWindows, 1, -1 do
+            local winX, winY = parentWindows[i].getPosition()
+            local winW, winH = parentWindows[i].getSize()
+            if x >= winX and y >= winY and x <= winX + winW - 1 and y <= winY + winH - 1 then
+                -- Translate point to be relative to the next window
+                x, y = x - winX + 1, y - winY + 1
+            else
+                return false
+            end
+        end
+
+        return true
     end
 
     --- Runs the main loop, returning information on an action.

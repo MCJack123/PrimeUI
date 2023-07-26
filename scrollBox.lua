@@ -41,8 +41,6 @@ function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys
         outer.setCursorPos(width, height)
         outer.write(innerHeight > height and "\31" or " ")
     end
-    -- Get the absolute position of the window.
-    x, y = PrimeUI.getWindowPos(win, x, y)
     -- Add the scroll handler.
     PrimeUI.addTask(function()
         local scrollPos = 1
@@ -56,7 +54,7 @@ function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys
             if ev[1] == "key" and allowArrowKeys then
                 if ev[2] == keys.up then dir = -1
                 elseif ev[2] == keys.down then dir = 1 end
-            elseif ev[1] == "mouse_scroll" and ev[3] >= x and ev[3] < x + width and ev[4] >= y and ev[4] < y + height then
+            elseif ev[1] == "mouse_scroll" and PrimeUI.inVisibleRegion(outer, ev[3], ev[4]) then
                 dir = ev[2]
             end
             -- If there's a scroll event, move the window vertically.

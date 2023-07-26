@@ -19,38 +19,39 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor)
     expect(5, action, "function", "string")
     fgColor = expect(6, fgColor, "number", "nil") or colors.white
     bgColor = expect(7, bgColor, "number", "nil") or colors.gray
-    clickedColor = expect(8, clickedColor, "number", "nil") or colors.lightGray
+    clickedColor = expect(8, clickedColor, "number", "nil") or colors.lightGray    
+    -- Create child frame for button
+    local buttonFrame = window.create(win, x, y, #text + 2, 1, true)
     -- Draw the initial button.
-    win.setCursorPos(x, y)
-    win.setBackgroundColor(bgColor)
-    win.setTextColor(fgColor)
-    win.write(" " .. text .. " ")
+    buttonFrame.setCursorPos(1, 1)
+    buttonFrame.setBackgroundColor(bgColor)
+    buttonFrame.setTextColor(fgColor)
+    buttonFrame.write(" " .. text .. " ")
     -- Get the screen position and add a click handler.
     PrimeUI.addTask(function()
         local buttonDown = false
         while true do
             local event, button, clickX, clickY = os.pullEvent()
-            local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
-            if event == "mouse_click" and button == 1 and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
+            if event == "mouse_click" and button == 1 and PrimeUI.inVisibleRegion(buttonFrame, clickX, clickY) then
                 -- Initiate a click action (but don't trigger until mouse up).
                 buttonDown = true
                 -- Redraw the button with the clicked background color.
-                win.setCursorPos(x, y)
-                win.setBackgroundColor(clickedColor)
-                win.setTextColor(fgColor)
-                win.write(" " .. text .. " ")
+                buttonFrame.setCursorPos(1, 1)
+                buttonFrame.setBackgroundColor(clickedColor)
+                buttonFrame.setTextColor(fgColor)
+                buttonFrame.write(" " .. text .. " ")
             elseif event == "mouse_up" and button == 1 and buttonDown then
                 -- Finish a click event.
-                if clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
+                if PrimeUI.inVisibleRegion(buttonFrame, clickX, clickY) then
                     -- Trigger the action.
                     if type(action) == "string" then PrimeUI.resolve("button", action)
                     else action() end
                 end
                 -- Redraw the original button state.
-                win.setCursorPos(x, y)
-                win.setBackgroundColor(bgColor)
-                win.setTextColor(fgColor)
-                win.write(" " .. text .. " ")
+                buttonFrame.setCursorPos(1, 1)
+                buttonFrame.setBackgroundColor(bgColor)
+                buttonFrame.setTextColor(fgColor)
+                buttonFrame.write(" " .. text .. " ")
             end
         end
     end)
