@@ -64,6 +64,7 @@ do
         -- Starting from root, check if absolute point is within
         -- each subsequenct window's bounds
         for i = #parentWindows, 1, -1 do
+            if (not parentWindows[i].isVisible()) then return false end
             local winX, winY = parentWindows[i].getPosition()
             local winW, winH = parentWindows[i].getSize()
             if x >= winX and y >= winY and x <= winX + winW - 1 and y <= winY + winH - 1 then
