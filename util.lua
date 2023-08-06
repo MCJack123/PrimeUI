@@ -15,7 +15,7 @@ do
         expect(1, func, "function")
         local t = {coro = coroutine.create(func)}
         coros[#coros+1] = t
-        _, t.filter = coroutine.resume(coro)
+        _, t.filter = coroutine.resume(t.coro)
     end
 
     --- Sends the provided arguments to the run loop, where they will be returned.
