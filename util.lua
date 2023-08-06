@@ -13,7 +13,9 @@ do
     ---@param func function The function to run, usually an `os.pullEvent` loop
     function PrimeUI.addTask(func)
         expect(1, func, "function")
-        coros[#coros+1] = {coro = coroutine.create(func)}
+        local t = {coro = coroutine.create(func)}
+        coros[#coros+1] = t
+        _, t.filter = coroutine.resume(coro)
     end
 
     --- Sends the provided arguments to the run loop, where they will be returned.
