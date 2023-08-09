@@ -28,7 +28,7 @@ function PrimeUI.clickRegion(win, x, y, width, height, action, periphName)
 				or event == "mouse_up" and button == 1 and periphName == nil then
 				-- Finish a click event.
 				if clickX >= screenX and clickX < screenX + width
-					and clickY >= screenY and clickY < screenY + height then
+					and clickY >= screenY and clickY < screenY + height + 1 then
 					-- Trigger the action.
 					if type(action) == "string" then
 						PrimeUI.resolve("click", action)
