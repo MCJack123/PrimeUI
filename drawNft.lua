@@ -8,8 +8,6 @@ local nft = require "cc.image.nft"
 ---@param x number The X position of the top left corner of the image
 ---@param y number The Y position of the top left corner of the image
 ---@param data string|table The path to the image to load, or the image data itself
----@param index number|nil The index of the frame to draw (defaults to 1)
----@param setPalette boolean|nil Whether to set the palette if the image contains one (defaults to true)
 function PrimeUI.drawNFT(win, x, y, data)
     expect(1, win, "table")
     expect(2, x, "number")
