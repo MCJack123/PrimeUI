@@ -13,7 +13,7 @@ function PrimeUI.drawNFT(win, x, y, data)
     expect(2, x, "number")
     expect(3, y, "number")
     expect(4, data, "string", "table")
-    -- Load the image file if a string was passed. (This consists of reading the file and unserializing.)
+    -- Load the image file if a string was passed using nft.load.
     if type(data) == "string" then
         data = assert(nft.load("data/example.nft"), "File is not a valid NFT file")
     end
