@@ -3,9 +3,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 -- Start copying below this line. --
 local nft = require "cc.image.nft"
 
---- Draws a NFT-formatted image to the screen. This does not support transparency,
---- and does not handle animation on its own (but the index parameter may be
---- used by apps to implement animation).
+--- Draws a NFT-formatted image to the screen.
 ---@param win window The window to draw on
 ---@param x number The X position of the top left corner of the image
 ---@param y number The Y position of the top left corner of the image
