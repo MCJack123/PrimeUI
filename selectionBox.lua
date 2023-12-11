@@ -24,6 +24,11 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
     expect(8, selectChangeAction, "function", "string", "nil")
     fgColor = expect(9, fgColor, "number", "nil") or colors.white
     bgColor = expect(10, bgColor, "number", "nil") or colors.black
+    -- Check that all entries are strings.
+    if #entries == 0 then error("bad argument #6 (table must not be empty)", 2) end
+    for i, v in ipairs(entries) do
+        if type(v) ~= "string" then error("bad item " .. i .. " in entries table (expected string, got " .. type(v), 2) end
+    end
     -- Create container window.
     local entrywin = window.create(win, x, y, width - 1, height)
     local selection, scroll = 1, 1
