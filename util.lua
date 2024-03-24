@@ -26,13 +26,13 @@ do
 
     --- Clears the screen and resets all components. Do not use any previously
     --- created components after calling this function.
-    function PrimeUI.clear()
+    function PrimeUI.clear(screen)
         -- Reset the screen.
-        term.setCursorPos(1, 1)
-        term.setCursorBlink(false)
-        term.setBackgroundColor(colors.black)
-        term.setTextColor(colors.white)
-        term.clear()
+        screen.setCursorPos(1, 1)
+        screen.setCursorBlink(false)
+        screen.setBackgroundColor(colors.black)
+        screen.setTextColor(colors.white)
+        screen.clear()
         -- Reset the task list and cursor restore function.
         coros = {}
         restoreCursor = nil
