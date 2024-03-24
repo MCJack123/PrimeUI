@@ -12,7 +12,7 @@ Aspernatur in animi sint perspiciatis aliquam iste vero quas. Cumque beatae vel 
 
 local PrimeUI = require "init"
 
-PrimeUI.clear()
+PrimeUI.clear(term.current())
 PrimeUI.label(term.current(), 3, 2, "Sample Text")
 PrimeUI.horizontalLine(term.current(), 3, 3, #("Sample Text") + 2)
 PrimeUI.borderBox(term.current(), 4, 6, 40, 10)
