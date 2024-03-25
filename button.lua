@@ -20,10 +20,11 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor,
     expect(5, action, "function", "string")
     fgColor = expect(6, fgColor, "number", "nil") or colors.white
     bgColor = expect(7, bgColor, "number", "nil") or colors.gray
+    expect(8, monitor, "table", "nil") or colors.gray
     clickedColor = expect(8, clickedColor, "number", "nil") or colors.lightGray
-    do
-        local ok, m = pcall(peripheral.getName, monitor or win)
-        monitor = ok and m or nil
+    -- Get the name of the monitor to listen on.
+    if monitor then
+      monitor = peripheral.getName(monitor)
     end
     -- Draw the initial button.
     win.setCursorPos(x, y)
@@ -48,25 +49,20 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor,
                 win.setTextColor(fgColor)
                 win.write(" " .. text .. " ")
 
+                -- Start a timer, to change the button background back to normal.
                 if monitor then
                     timer = os.startTimer(.1)
                 end
-            elseif event == "mouse_up" and button == 1 and buttonDown then
+            elseif buttonDown and
+                (event == "mouse_up" and button == 1) or
+                (timer == "timer" and timer == button) then
                 -- Finish a click event.
-                if clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
+                if event == "mouse_up" and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
                     -- Trigger the action.
                     if type(action) == "string" then PrimeUI.resolve("button", action)
                     else action() end
                 end
                 -- Redraw the original button state.
-                win.setCursorPos(x, y)
-                win.setBackgroundColor(bgColor)
-                win.setTextColor(fgColor)
-                win.write(" " .. text .. " ")
-            elseif event == "timer" and timer == button and buttonDown then
-                if type(action) == "string" then PrimeUI.resolve("button", action)
-                else action() end
-
                 win.setCursorPos(x, y)
                 win.setBackgroundColor(bgColor)
                 win.setTextColor(fgColor)
