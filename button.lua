@@ -11,7 +11,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param fgColor color|nil The color of the button text (defaults to white)
 ---@param bgColor color|nil The color of the button (defaults to light gray)
 ---@param clickedColor color|nil The color of the button when clicked (defaults to gray)
----@param monitor monitor|nil The monitor to listen for events on (no default)
+---@param monitor monitor|nil The monitor to listen for events on (falls back to win)
 function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor, monitor)
     expect(1, win, "table")
     expect(2, x, "number")
@@ -20,11 +20,14 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor,
     expect(5, action, "function", "string")
     fgColor = expect(6, fgColor, "number", "nil") or colors.white
     bgColor = expect(7, bgColor, "number", "nil") or colors.gray
-    expect(8, monitor, "table", "nil") or colors.gray
     clickedColor = expect(8, clickedColor, "number", "nil") or colors.lightGray
+    expect(9, monitor, "table", "nil")
     -- Get the name of the monitor to listen on.
     if monitor then
       monitor = peripheral.getName(monitor)
+    else
+      local ok, per = pcall(peripheral.getName, win)
+      monitor = ok and per
     end
     -- Draw the initial button.
     win.setCursorPos(x, y)
@@ -55,7 +58,7 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor,
                 end
             elseif buttonDown and
                 (event == "mouse_up" and button == 1) or
-                (timer == "timer" and timer == button) then
+                (event == "timer" and timer == button) then
                 -- Finish a click event.
                 if event == "mouse_up" and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
                     -- Trigger the action.
