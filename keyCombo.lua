@@ -7,7 +7,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param withCtrl boolean Whether Ctrl is required
 ---@param withAlt boolean Whether Alt is required
 ---@param withShift boolean Whether Shift is required
----@param action function A function to call when clicked
+---@param action function|string A function to call when clicked, or a string to use as a key for a `run` return event
 ---@return Task task The task for the key handler
 function PrimeUI.keyCombo(key, withCtrl, withAlt, withShift, action)
     expect(1, key, "number")
@@ -21,7 +21,9 @@ function PrimeUI.keyCombo(key, withCtrl, withAlt, withShift, action)
             local event, param1, param2 = os.pullEvent() -- wait for key
             if event == "key" then
                 -- check if key is down, all modifiers are correct, and that it's not held
-                if param1 == key and heldCtrl == withCtrl and heldAlt == withAlt and heldShift == withShift and not param2 then action()
+                if param1 == key and heldCtrl == withCtrl and heldAlt == withAlt and heldShift == withShift and not param2 then
+                    if type(action) == "string" then PrimeUI.resolve("keyCombo", action)
+                    else action() end
                 -- activate modifier keys
                 elseif param1 == keys.leftCtrl or param1 == keys.rightCtrl then heldCtrl = true
                 elseif param1 == keys.leftAlt or param1 == keys.rightAlt then heldAlt = true

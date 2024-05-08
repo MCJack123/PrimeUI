@@ -9,7 +9,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param width number The width of the inner box
 ---@param height number The height of the inner box
 ---@param selections table<string,string|boolean> A list of entries to show, where the value is whether the item is pre-selected (or `"R"` for required/forced selected)
----@param action function|nil A function that's called when a selection is made
+---@param action function|string|nil A function or `run` event that's called when a selection is made
 ---@param fgColor color|nil The color of the text (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
 ---@return Task task The task for the key/scroll handler
@@ -73,7 +73,8 @@ function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action,
                     inner.setCursorPos(2, selected)
                     inner.write(lines[selected][2] and "\xD7" or " ")
                     -- Call the action if passed; otherwise, set the original table.
-                    if action then action(lines[selected][1], lines[selected][2])
+                    if type(action) == "string" then PrimeUI.resolve("checkSelectionBox", action, lines[selected][1], lines[selected][2])
+                    elseif action then action(lines[selected][1], lines[selected][2])
                     else selections[lines[selected][1]] = lines[selected][2] end
                     -- Redraw all lines in case of changes.
                     for i, v in ipairs(lines) do

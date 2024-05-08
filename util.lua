@@ -6,7 +6,7 @@ local expect = require "cc.expect".expect
 -- Initialization code
 local PrimeUI = {}
 do
-    local loop
+    local loop, resolveValues
     local tasks = {}
 
     --- Adds a task to run in the main loop.
@@ -18,6 +18,22 @@ do
         local task = loop:addTask(func)
         tasks[#tasks+1] = task
         return task
+    end
+
+    --- Sends the provided arguments to the run loop, where they will be returned.
+    ---@param ... any The parameters to send
+    function PrimeUI.resolve(...)
+        resolveValues = table.pack(...)
+        -- Reset the task list and cursor restore function.
+        local task
+        for _, v in ipairs(tasks) do
+            if v == loop.currentTask then task = v
+            else v:remove() end
+        end
+        tasks = {}
+        loop:setPreYieldHook(nil)
+        -- Don't remove the current task until everything else is done - this never returns.
+        if task then task:remove() end
     end
 
     --- Clears the screen and resets all components. This also stops all tasks,
@@ -72,6 +88,17 @@ do
             _, win = debug.getupvalue(select(2, debug.getupvalue(win.isColor, 1)), 1) -- gets the parent window through an upvalue
         end
         return x, y
+    end
+
+    --- Runs the main loop.
+    function PrimeUI.run()
+        if not loop then error("Please call PrimeUI.clear with the Taskmaster run loop before using this function.", 2) end
+        loop:run(#tasks)
+        if resolveValues then
+            local t = resolveValues
+            resolveValues = nil
+            return table.unpack(t, 1, t.n)
+        end
     end
 end
 

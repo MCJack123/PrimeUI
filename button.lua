@@ -7,7 +7,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param x number The X position of the button
 ---@param y number The Y position of the button
 ---@param text string The text to draw on the button
----@param action function A function to call when clicked
+---@param action function|string A function to call when clicked, or a string to send with a `run` event
 ---@param fgColor color|nil The color of the button text (defaults to white)
 ---@param bgColor color|nil The color of the button (defaults to light gray)
 ---@param clickedColor color|nil The color of the button when clicked (defaults to gray)
@@ -17,7 +17,7 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor)
     expect(2, x, "number")
     expect(3, y, "number")
     expect(4, text, "string")
-    expect(5, action, "function")
+    expect(5, action, "function", "string")
     fgColor = expect(6, fgColor, "number", "nil") or colors.white
     bgColor = expect(7, bgColor, "number", "nil") or colors.gray
     clickedColor = expect(8, clickedColor, "number", "nil") or colors.lightGray
@@ -44,7 +44,8 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor)
                 -- Finish a click event.
                 if clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
                     -- Trigger the action.
-                    action()
+                    if type(action) == "string" then PrimeUI.resolve("button", action)
+                    else action() end
                 end
                 -- Redraw the original button state.
                 win.setCursorPos(x, y)

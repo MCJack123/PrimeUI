@@ -9,8 +9,8 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param width number The width of the inner box
 ---@param height number The height of the inner box
 ---@param entries string[] A list of entries to show, where the value is whether the item is pre-selected (or `"R"` for required/forced selected)
----@param action function A function that's called when a selection is made
----@param selectChangeAction function|nil A function that's called when the current selection is changed
+---@param action function|string A function or `run` event that's called when a selection is made
+---@param selectChangeAction function|string|nil A function or `run` event that's called when the current selection is changed
 ---@param fgColor color|nil The color of the text (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
 ---@return Task task The task handling key events
@@ -76,7 +76,8 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
                 selection = selection + 1
                 if selection > scroll + height - 1 then scroll = scroll + 1 end
                 -- Send action if necessary.
-                if selectChangeAction then selectChangeAction(selection) end
+                if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                elseif selectChangeAction then selectChangeAction(selection) end
                 -- Redraw screen.
                 drawEntries()
             elseif key == keys.up and selection > 1 then
@@ -84,12 +85,14 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
                 selection = selection - 1
                 if selection < scroll then scroll = scroll - 1 end
                 -- Send action if necessary.
-                if selectChangeAction then selectChangeAction(selection) end
+                if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                elseif selectChangeAction then selectChangeAction(selection) end
                 -- Redraw screen.
                 drawEntries()
             elseif key == keys.enter then
                 -- Select the entry: send the action.
-                action(entries[selection])
+                if type(action) == "string" then PrimeUI.resolve("selectionBox", action, entries[selection])
+                else action(entries[selection]) end
             end
         end
     end)
