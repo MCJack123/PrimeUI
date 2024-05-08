@@ -14,6 +14,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param fgColor number|nil The color of scroll indicators (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
 ---@return window inner The inner window to draw inside
+---@return Task task The task handling scroll events
 function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys, showScrollIndicators, fgColor, bgColor)
     expect(1, win, "table")
     expect(2, x, "number")
@@ -44,7 +45,7 @@ function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys
     -- Get the absolute position of the window.
     x, y = PrimeUI.getWindowPos(win, x, y)
     -- Add the scroll handler.
-    PrimeUI.addTask(function()
+    local task = PrimeUI.addTask(function()
         local scrollPos = 1
         while true do
             -- Wait for next event.
@@ -75,5 +76,5 @@ function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys
             end
         end
     end)
-    return inner
+    return inner, task
 end

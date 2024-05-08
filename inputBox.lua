@@ -14,6 +14,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param history string[]|nil A list of previous entries to provide
 ---@param completion function|nil A function to call to provide completion
 ---@param default string|nil A string to return if the box is empty
+---@return Task task The task that handles key input
 function PrimeUI.inputBox(win, x, y, width, action, fgColor, bgColor, replacement, history, completion, default)
     expect(1, win, "table")
     expect(2, x, "number")
@@ -32,7 +33,7 @@ function PrimeUI.inputBox(win, x, y, width, action, fgColor, bgColor, replacemen
     box.setBackgroundColor(bgColor)
     box.clear()
     -- Call read() in a new coroutine.
-    PrimeUI.addTask(function()
+    return PrimeUI.addTask(function()
         -- We need a child coroutine to be able to redirect back to the window.
         local coro = coroutine.create(read)
         -- Run the function for the first time, redirecting to the window.
@@ -51,8 +52,7 @@ function PrimeUI.inputBox(win, x, y, width, action, fgColor, bgColor, replacemen
             if not ok then error(res) end
         end
         -- Send the result to the receiver.
-        if type(action) == "string" then PrimeUI.resolve("inputBox", action, res)
-        else action(res) end
+        action(res)
         -- Spin forever, because tasks cannot exit.
         while true do os.pullEvent() end
     end)

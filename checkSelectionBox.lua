@@ -12,6 +12,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param action function|string|nil A function or `run` event that's called when a selection is made
 ---@param fgColor color|nil The color of the text (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
+---@return Task task The task for the key/scroll handler
 function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action, fgColor, bgColor)
     expect(1, win, "table")
     expect(2, x, "number")
@@ -56,7 +57,7 @@ function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action,
     PrimeUI.setCursorWindow(inner)
     -- Get screen coordinates & add run task.
     local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
-    PrimeUI.addTask(function()
+    return PrimeUI.addTask(function()
         local scrollPos = 1
         while true do
             -- Wait for an event.
@@ -72,8 +73,7 @@ function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action,
                     inner.setCursorPos(2, selected)
                     inner.write(lines[selected][2] and "\xD7" or " ")
                     -- Call the action if passed; otherwise, set the original table.
-                    if type(action) == "string" then PrimeUI.resolve("checkSelectionBox", action, lines[selected][1], lines[selected][2])
-                    elseif action then action(lines[selected][1], lines[selected][2])
+                    if action then action(lines[selected][1], lines[selected][2])
                     else selections[lines[selected][1]] = lines[selected][2] end
                     -- Redraw all lines in case of changes.
                     for i, v in ipairs(lines) do

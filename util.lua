@@ -6,27 +6,32 @@ local expect = require "cc.expect".expect
 -- Initialization code
 local PrimeUI = {}
 do
-    local coros = {}
-    local restoreCursor
+    local loop
+    local tasks = {}
 
     --- Adds a task to run in the main loop.
     ---@param func function The function to run, usually an `os.pullEvent` loop
+    ---@return Task task The created task
     function PrimeUI.addTask(func)
         expect(1, func, "function")
-        local t = {coro = coroutine.create(func)}
-        coros[#coros+1] = t
-        _, t.filter = coroutine.resume(t.coro)
+        if not loop then error("Please call PrimeUI.clear with the Taskmaster run loop before using this function.", 3) end
+        local task = loop:addTask(func)
+        tasks[#tasks+1] = task
+        return task
     end
 
-    --- Sends the provided arguments to the run loop, where they will be returned.
-    ---@param ... any The parameters to send
-    function PrimeUI.resolve(...)
-        coroutine.yield(coros, ...)
-    end
-
-    --- Clears the screen and resets all components. Do not use any previously
-    --- created components after calling this function.
-    function PrimeUI.clear()
+    --- Clears the screen and resets all components. This also stops all tasks,
+    --- which causes the run loop to stop if no other tasks were added. Do not
+    --- use any previously created components after calling this function. If
+    --- called from an action callback, this will never return.
+    function PrimeUI.clear(newloop)
+        -- Set the run loop if provided.
+        if newloop ~= nil then
+            expect(1, newloop, "table")
+            loop = newloop
+        elseif not loop then
+            error("Please call PrimeUI.clear with the Taskmaster run loop.", 2)
+        end
         -- Reset the screen.
         term.setCursorPos(1, 1)
         term.setCursorBlink(false)
@@ -34,15 +39,22 @@ do
         term.setTextColor(colors.white)
         term.clear()
         -- Reset the task list and cursor restore function.
-        coros = {}
-        restoreCursor = nil
+        local task
+        for _, v in ipairs(tasks) do
+            if v == loop.currentTask then task = v
+            else v:remove() end
+        end
+        tasks = {}
+        loop:setPreYieldHook(nil)
+        -- Don't remove the current task until everything else is done - this never returns.
+        if task then task:remove() end
     end
 
     --- Sets or clears the window that holds where the cursor should be.
     ---@param win window|nil The window to set as the active window
     function PrimeUI.setCursorWindow(win)
         expect(1, win, "table", "nil")
-        restoreCursor = win and win.restoreCursor
+        loop:setPreYieldHook(win and win.restoreCursor)
     end
 
     --- Gets the absolute position of a coordinate relative to a window.
@@ -60,29 +72,6 @@ do
             _, win = debug.getupvalue(select(2, debug.getupvalue(win.isColor, 1)), 1) -- gets the parent window through an upvalue
         end
         return x, y
-    end
-
-    --- Runs the main loop, returning information on an action.
-    ---@return any ... The result of the coroutine that exited
-    function PrimeUI.run()
-        while true do
-            -- Restore the cursor and wait for the next event.
-            if restoreCursor then restoreCursor() end
-            local ev = table.pack(os.pullEvent())
-            -- Run all coroutines.
-            for _, v in ipairs(coros) do
-                if v.filter == nil or v.filter == ev[1] then
-                    -- Resume the coroutine, passing the current event.
-                    local res = table.pack(coroutine.resume(v.coro, table.unpack(ev, 1, ev.n)))
-                    -- If the call failed, bail out. Coroutines should never exit.
-                    if not res[1] then error(res[2], 2) end
-                    -- If the coroutine resolved, return its values.
-                    if res[2] == coros then return table.unpack(res, 3, res.n) end
-                    -- Set the next event filter.
-                    v.filter = res[2]
-                end
-            end
-        end
     end
 end
 

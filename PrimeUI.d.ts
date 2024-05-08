@@ -26,16 +26,10 @@ declare namespace PrimeUI {
     function addTask(func: () => void): void;
 
     /**
-     * Sends the provided arguments to the run loop, where they will be returned.
-     * @param args The parameters to send
-     */
-    function resolve(...args: any[]): never;
-
-    /**
      * Clears the screen and resets all components. Do not use any previously
      * created components after calling this function.
      */
-    function clear(): void;
+    function clear(loop: LuaTable): void;
 
     /**
      * Sets or clears the window that holds where the cursor should be.
@@ -51,12 +45,6 @@ declare namespace PrimeUI {
      * @return The absolute X and Y position of the window
      */
     function getWindowPos(win: ITerminal, x: number, y: number): LuaMultiReturn<[number, number]>;
-
-    /**
-     * Runs the main loop, returning information on an action.
-     * @return The result of the coroutine that exited
-     */
-    function run(): LuaMultiReturn<any[]>;
 
     /**
      * Draws a thin border around a screen region.

@@ -11,16 +11,17 @@ Aspernatur in animi sint perspiciatis aliquam iste vero quas. Cumque beatae vel 
 ]]
 
 local PrimeUI = require "init"
+local loop = require "taskmaster"()
 
-PrimeUI.clear()
+PrimeUI.clear(loop)
 PrimeUI.label(term.current(), 3, 2, "Sample Text")
 PrimeUI.horizontalLine(term.current(), 3, 3, #("Sample Text") + 2)
 PrimeUI.borderBox(term.current(), 4, 6, 40, 10)
 local scroller = PrimeUI.scrollBox(term.current(), 4, 6, 40, 10, 9000, true, true)
 PrimeUI.drawText(scroller, loremIpsum, true)
-PrimeUI.button(term.current(), 3, 18, "Next", "done")
-PrimeUI.keyAction(keys.enter, "done")
-PrimeUI.run()
+PrimeUI.button(term.current(), 3, 18, "Next", PrimeUI.clear)
+PrimeUI.keyAction(keys.enter, PrimeUI.clear)
+loop:run()
 
 PrimeUI.clear()
 PrimeUI.label(term.current(), 3, 2, "Sample Text")
@@ -34,17 +35,18 @@ local entries = {
     ["Item 5"] = false
 }
 PrimeUI.checkSelectionBox(term.current(), 4, 6, 40, 10, entries)
-PrimeUI.button(term.current(), 3, 18, "Next", "done")
-PrimeUI.keyAction(keys.enter, "done")
-PrimeUI.run()
+PrimeUI.button(term.current(), 3, 18, "Next", PrimeUI.clear)
+PrimeUI.keyAction(keys.enter, PrimeUI.clear)
+loop:run()
 
+local text
 PrimeUI.clear()
 PrimeUI.label(term.current(), 3, 2, "Sample Text")
 PrimeUI.horizontalLine(term.current(), 3, 3, #("Sample Text") + 2)
 PrimeUI.label(term.current(), 3, 5, "Enter some text.")
 PrimeUI.borderBox(term.current(), 4, 7, 40, 1)
-PrimeUI.inputBox(term.current(), 4, 7, 40, "result")
-local _, _, text = PrimeUI.run()
+PrimeUI.inputBox(term.current(), 4, 7, 40, function(t) text = t PrimeUI.clear() end)
+loop:run()
 
 PrimeUI.clear()
 PrimeUI.label(term.current(), 3, 2, "Sample Text")
@@ -65,8 +67,9 @@ local entries2_descriptions = {
 }
 local redraw = PrimeUI.textBox(term.current(), 3, 15, 40, 3, entries2_descriptions[1])
 PrimeUI.borderBox(term.current(), 4, 6, 40, 8)
-PrimeUI.selectionBox(term.current(), 4, 6, 40, 8, entries2, "done", function(option) redraw(entries2_descriptions[option]) end)
-local _, _, selection = PrimeUI.run()
+local selection
+PrimeUI.selectionBox(term.current(), 4, 6, 40, 8, entries2, function(s) selection = s PrimeUI.clear() end, function(option) redraw(entries2_descriptions[option]) end)
+loop:run()
 
 PrimeUI.clear()
 PrimeUI.label(term.current(), 3, 2, "Sample Text")
@@ -79,10 +82,10 @@ PrimeUI.interval(0.1, function()
     progress(i / 20)
     i = i + 1
     if i > 20 then
-        PrimeUI.resolve("updateProgress", "done")
+        PrimeUI.clear()
         return false
     end
 end)
-PrimeUI.run()
+loop:run()
 
 PrimeUI.clear()

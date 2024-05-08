@@ -5,15 +5,15 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 --- Adds an action to trigger when a key is pressed.
 ---@param key key The key to trigger on, from `keys.*`
 ---@param action function|string A function to call when clicked, or a string to use as a key for a `run` return event
+---@return Task task The task for the handler
 function PrimeUI.keyAction(key, action)
     expect(1, key, "number")
     expect(2, action, "function", "string")
-    PrimeUI.addTask(function()
+    return PrimeUI.addTask(function()
         while true do
             local _, param1 = os.pullEvent("key") -- wait for key
             if param1 == key then
-                if type(action) == "string" then PrimeUI.resolve("keyAction", action)
-                else action() end
+                action()
             end
         end
     end)

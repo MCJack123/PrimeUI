@@ -13,6 +13,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param selectChangeAction function|string|nil A function or `run` event that's called when the current selection is changed
 ---@param fgColor color|nil The color of the text (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
+---@return Task task The task handling key events
 function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectChangeAction, fgColor, bgColor)
     expect(1, win, "table")
     expect(2, x, "number")
@@ -67,7 +68,7 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
     -- Draw first screen.
     drawEntries()
     -- Add a task for selection keys.
-    PrimeUI.addTask(function()
+    return PrimeUI.addTask(function()
         while true do
             local _, key = os.pullEvent("key")
             if key == keys.down and selection < #entries then
@@ -75,8 +76,7 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
                 selection = selection + 1
                 if selection > scroll + height - 1 then scroll = scroll + 1 end
                 -- Send action if necessary.
-                if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
-                elseif selectChangeAction then selectChangeAction(selection) end
+                if selectChangeAction then selectChangeAction(selection) end
                 -- Redraw screen.
                 drawEntries()
             elseif key == keys.up and selection > 1 then
@@ -84,14 +84,12 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
                 selection = selection - 1
                 if selection < scroll then scroll = scroll - 1 end
                 -- Send action if necessary.
-                if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
-                elseif selectChangeAction then selectChangeAction(selection) end
+                if selectChangeAction then selectChangeAction(selection) end
                 -- Redraw screen.
                 drawEntries()
             elseif key == keys.enter then
                 -- Select the entry: send the action.
-                if type(action) == "string" then PrimeUI.resolve("selectionBox", action, entries[selection])
-                else action(entries[selection]) end
+                action(entries[selection])
             end
         end
     end)
