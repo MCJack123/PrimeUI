@@ -4,7 +4,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 
 --- Runs a function or action after the specified time period, with optional canceling.
 ---@param time number The amount of time to wait for, in seconds
----@param action function|string The function to call when the timer completes, or a `run` event to send
+---@param action function The function to call when the timer completes
 ---@return function cancel A function to cancel the timer
 ---@return Task task The task for the timer
 function PrimeUI.timeout(time, action)

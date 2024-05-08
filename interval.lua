@@ -6,7 +6,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 --- If a function is passed as an action, it may return a number to change the
 --- period, or `false` to stop it.
 ---@param time number The amount of time to wait for each time, in seconds
----@param action function|string The function to call when the timer completes, or a `run` event to send
+---@param action function The function to call when the timer completes
 ---@return function cancel A function to cancel the timer
 ---@return Task task The task for the timer
 function PrimeUI.interval(time, action)

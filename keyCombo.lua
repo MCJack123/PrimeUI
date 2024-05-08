@@ -7,7 +7,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param withCtrl boolean Whether Ctrl is required
 ---@param withAlt boolean Whether Alt is required
 ---@param withShift boolean Whether Shift is required
----@param action function|string A function to call when clicked, or a string to use as a key for a `run` return event
+---@param action function A function to call when clicked
 ---@return Task task The task for the key handler
 function PrimeUI.keyCombo(key, withCtrl, withAlt, withShift, action)
     expect(1, key, "number")

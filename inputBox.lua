@@ -7,7 +7,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param x number The X position of the left side of the box
 ---@param y number The Y position of the box
 ---@param width number The width/length of the box
----@param action function|string A function or `run` event to call when the enter key is pressed
+---@param action function A function to call when the enter key is pressed
 ---@param fgColor color|nil The color of the text (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
 ---@param replacement string|nil A character to replace typed characters with
