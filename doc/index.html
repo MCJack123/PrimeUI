@@ -1,0 +1,1067 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>PrimeUI</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>PrimeUI</code></h1>
+<p></p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#addTask">addTask (func)</a></td>
+	<td class="summary">Adds a task to run in the main loop.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#resolve">resolve (...)</a></td>
+	<td class="summary">Sends the provided arguments to the run loop, where they will be returned.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#clear">clear ()</a></td>
+	<td class="summary">Clears the screen and resets all components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#setCursorWindow">setCursorWindow (win)</a></td>
+	<td class="summary">Sets or clears the window that holds where the cursor should be.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getWindowPos">getWindowPos (win, x, y)</a></td>
+	<td class="summary">Gets the absolute position of a coordinate relative to a window.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#run">run ()</a></td>
+	<td class="summary">Runs the main loop, returning information on an action.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#borderBox">borderBox (win, x, y, width, height, fgColor, bgColor)</a></td>
+	<td class="summary">Draws a thin border around a screen region.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#button">button (win, x, y, text, action, fgColor, bgColor, clickedColor)</a></td>
+	<td class="summary">Creates a clickable button on screen with text.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#centerLabel">centerLabel (win, x, y, width, text, fgColor, bgColor)</a></td>
+	<td class="summary">Draws a line of text, centering it inside a box horizontally.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#checkSelectionBox">checkSelectionBox (win, x, y, width, height, selections, action, fgColor, bgColor)</a></td>
+	<td class="summary">Creates a list of entries with toggleable check boxes.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#drawImage">drawImage (win, x, y, data, index, setPalette)</a></td>
+	<td class="summary">Draws a BIMG-formatted image to the screen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#drawText">drawText (win, text, resizeToFit, fgColor, bgColor)</a></td>
+	<td class="summary">Draws a block of text inside a window with word wrapping, optionally resizing the window to fit.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#horizontalLine">horizontalLine (win, x, y, width, fgColor, bgColor)</a></td>
+	<td class="summary">Draws a horizontal line at a position with the specified width.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#inputBox">inputBox (win, x, y, width, action, fgColor, bgColor, replacement, history, completion, default)</a></td>
+	<td class="summary">Creates a text input box.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#interval">interval (time, action)</a></td>
+	<td class="summary">Runs a function or action repeatedly after a specified time period until canceled.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#keyAction">keyAction (key, action)</a></td>
+	<td class="summary">Adds an action to trigger when a key is pressed.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#keyCombo">keyCombo (key, withCtrl, withAlt, withShift, action)</a></td>
+	<td class="summary">Adds an action to trigger when a key is pressed with modifier keys.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#label">label (win, x, y, text, fgColor, bgColor)</a></td>
+	<td class="summary">Draws a line of text at a position.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#progressBar">progressBar (win, x, y, width, fgColor, bgColor, useShade)</a></td>
+	<td class="summary">Creates a progress bar, which can be updated by calling the returned function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#scrollBox">scrollBox (win, x, y, width, height, innerHeight, allowArrowKeys, showScrollIndicators, fgColor, bgColor)</a></td>
+	<td class="summary">Creates a scrollable window, which allows drawing large content in a small area.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#selectionBox">selectionBox (win, x, y, width, height, entries, action, selectChangeAction, fgColor, bgColor)</a></td>
+	<td class="summary">Creates a list of entries that can each be selected with the Enter key.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#textBox">textBox (win, x, y, width, height, text, fgColor, bgColor)</a></td>
+	<td class="summary">Creates a text box that wraps text and can have its text modified later.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#timeout">timeout (time, action)</a></td>
+	<td class="summary">Runs a function or action after the specified time period, with optional canceling.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "addTask"></a>
+    <strong>addTask (func)</strong>
+    </dt>
+    <dd>
+    Adds a task to run in the main loop.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">function</span></span>
+         The function to run, usually an `os.pullEvent` loop
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "resolve"></a>
+    <strong>resolve (...)</strong>
+    </dt>
+    <dd>
+    Sends the provided arguments to the run loop, where they will be returned.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         any The parameters to send
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "clear"></a>
+    <strong>clear ()</strong>
+    </dt>
+    <dd>
+    Clears the screen and resets all components.  Do not use any previously
+ created components after calling this function.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "setCursorWindow"></a>
+    <strong>setCursorWindow (win)</strong>
+    </dt>
+    <dd>
+    Sets or clears the window that holds where the cursor should be.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         |nil The window to set as the active window
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getWindowPos"></a>
+    <strong>getWindowPos (win, x, y)</strong>
+    </dt>
+    <dd>
+    Gets the absolute position of a coordinate relative to a window.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to check
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The relative X position of the point
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The relative Y position of the point
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        The absolute X position of the window</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        The absolute Y position of the window</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "run"></a>
+    <strong>run ()</strong>
+    </dt>
+    <dd>
+    Runs the main loop, returning information on an action.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">any</span></span>
+        ... The result of the coroutine that exited
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "borderBox"></a>
+    <strong>borderBox (win, x, y, width, height, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Draws a thin border around a screen region.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X coordinate of the inside of the box
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y coordinate of the inside of the box
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width of the inner box
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+         The height of the inner box
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the border (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "button"></a>
+    <strong>button (win, x, y, text, action, fgColor, bgColor, clickedColor)</strong>
+    </dt>
+    <dd>
+    Creates a clickable button on screen with text.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the button
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the button
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         The text to draw on the button
+        </li>
+        <li><span class="parameter">action</span>
+            <span class="types"><span class="type">function</span></span>
+         |string A function to call when clicked, or a string to send with a `run` event
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the button text (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the button (defaults to light gray)
+        </li>
+        <li><span class="parameter">clickedColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the button when clicked (defaults to gray)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "centerLabel"></a>
+    <strong>centerLabel (win, x, y, width, text, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Draws a line of text, centering it inside a box horizontally.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the left side of the box
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the box
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width of the box to draw in
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         The text to draw
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the text (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "checkSelectionBox"></a>
+    <strong>checkSelectionBox (win, x, y, width, height, selections, action, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Creates a list of entries with toggleable check boxes.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X coordinate of the inside of the box
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y coordinate of the inside of the box
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width of the inner box
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+         The height of the inner box
+        </li>
+        <li><span class="parameter">selections</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         <string,string|boolean> A list of entries to show, where the value is whether the item is pre-selected (or `"R"` for required/forced selected)
+        </li>
+        <li><span class="parameter">action</span>
+            <span class="types"><span class="type">function</span></span>
+         |string|nil A function or `run` event that's called when a selection is made
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the text (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "drawImage"></a>
+    <strong>drawImage (win, x, y, data, index, setPalette)</strong>
+    </dt>
+    <dd>
+    Draws a BIMG-formatted image to the screen.  This does not support transparency,
+ and does not handle animation on its own (but the index parameter may be
+ used by apps to implement animation).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the top left corner of the image
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the top left corner of the image
+        </li>
+        <li><span class="parameter">data</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         |table The path to the image to load, or the image data itself
+        </li>
+        <li><span class="parameter">index</span>
+            <span class="types"><span class="type">number</span></span>
+         |nil The index of the frame to draw (defaults to 1)
+        </li>
+        <li><span class="parameter">setPalette</span>
+            <span class="types"><span class="type">boolean</span></span>
+         |nil Whether to set the palette if the image contains one (defaults to true)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "drawText"></a>
+    <strong>drawText (win, text, resizeToFit, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Draws a block of text inside a window with word wrapping, optionally resizing the window to fit.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw in
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         The text to draw
+        </li>
+        <li><span class="parameter">resizeToFit</span>
+            <span class="types"><span class="type">boolean</span></span>
+         |nil Whether to resize the window to fit the text (defaults to false). This is useful for scroll boxes.
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the text (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The total number of lines drawn
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "horizontalLine"></a>
+    <strong>horizontalLine (win, x, y, width, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Draws a horizontal line at a position with the specified width.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the left side of the line
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the line
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width/length of the line
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the line (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "inputBox"></a>
+    <strong>inputBox (win, x, y, width, action, fgColor, bgColor, replacement, history, completion, default)</strong>
+    </dt>
+    <dd>
+    Creates a text input box.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the left side of the box
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the box
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width/length of the box
+        </li>
+        <li><span class="parameter">action</span>
+            <span class="types"><span class="type">function</span></span>
+         |string A function or `run` event to call when the enter key is pressed
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the text (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+        <li><span class="parameter">replacement</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         |nil A character to replace typed characters with
+        </li>
+        <li><span class="parameter">history</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         []|nil A list of previous entries to provide
+        </li>
+        <li><span class="parameter">completion</span>
+            <span class="types"><span class="type">function</span></span>
+         |nil A function to call to provide completion
+        </li>
+        <li><span class="parameter">default</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         |nil A string to return if the box is empty
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "interval"></a>
+    <strong>interval (time, action)</strong>
+    </dt>
+    <dd>
+    Runs a function or action repeatedly after a specified time period until canceled.
+ If a function is passed as an action, it may return a number to change the
+ period, or `false` to stop it.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">time</span>
+            <span class="types"><span class="type">number</span></span>
+         The amount of time to wait for each time, in seconds
+        </li>
+        <li><span class="parameter">action</span>
+            <span class="types"><span class="type">function</span></span>
+         |string The function to call when the timer completes, or a `run` event to send
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A function to cancel the timer
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "keyAction"></a>
+    <strong>keyAction (key, action)</strong>
+    </dt>
+    <dd>
+    Adds an action to trigger when a key is pressed.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+            <span class="types"><span class="type">key</span></span>
+         The key to trigger on, from `keys.*`
+        </li>
+        <li><span class="parameter">action</span>
+            <span class="types"><span class="type">function</span></span>
+         |string A function to call when clicked, or a string to use as a key for a `run` return event
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "keyCombo"></a>
+    <strong>keyCombo (key, withCtrl, withAlt, withShift, action)</strong>
+    </dt>
+    <dd>
+    Adds an action to trigger when a key is pressed with modifier keys.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+            <span class="types"><span class="type">key</span></span>
+         The key to trigger on, from `keys.*`
+        </li>
+        <li><span class="parameter">withCtrl</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Whether Ctrl is required
+        </li>
+        <li><span class="parameter">withAlt</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Whether Alt is required
+        </li>
+        <li><span class="parameter">withShift</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Whether Shift is required
+        </li>
+        <li><span class="parameter">action</span>
+            <span class="types"><span class="type">function</span></span>
+         |string A function to call when clicked, or a string to use as a key for a `run` return event
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "label"></a>
+    <strong>label (win, x, y, text, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Draws a line of text at a position.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the left side of the line
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the line
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         The text to draw
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the text (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "progressBar"></a>
+    <strong>progressBar (win, x, y, width, fgColor, bgColor, useShade)</strong>
+    </dt>
+    <dd>
+    Creates a progress bar, which can be updated by calling the returned function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the left side of the bar
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the bar
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width of the bar
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the activated part of the bar (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the inactive part of the bar (defaults to black)
+        </li>
+        <li><span class="parameter">useShade</span>
+            <span class="types"><span class="type">boolean</span></span>
+         |nil Whether to use shaded areas for the inactive part (defaults to false)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A function to call to update the progress of the bar, taking a number from 0.0 to 1.0
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "scrollBox"></a>
+    <strong>scrollBox (win, x, y, width, height, innerHeight, allowArrowKeys, showScrollIndicators, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Creates a scrollable window, which allows drawing large content in a small area.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The parent window of the scroll box
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the box
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the box
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width of the box
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+         The height of the outer box
+        </li>
+        <li><span class="parameter">innerHeight</span>
+            <span class="types"><span class="type">number</span></span>
+         The height of the inner scroll area
+        </li>
+        <li><span class="parameter">allowArrowKeys</span>
+            <span class="types"><span class="type">boolean</span></span>
+         |nil Whether to allow arrow keys to scroll the box (defaults to true)
+        </li>
+        <li><span class="parameter">showScrollIndicators</span>
+            <span class="types"><span class="type">boolean</span></span>
+         |nil Whether to show arrow indicators on the right side when scrolling is available, which reduces the inner width by 1 (defaults to false)
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">number</span></span>
+         |nil The color of scroll indicators (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">window</span></span>
+        The inner window to draw inside
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "selectionBox"></a>
+    <strong>selectionBox (win, x, y, width, height, entries, action, selectChangeAction, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Creates a list of entries that can each be selected with the Enter key.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The window to draw on
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X coordinate of the inside of the box
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y coordinate of the inside of the box
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width of the inner box
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+         The height of the inner box
+        </li>
+        <li><span class="parameter">entries</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         [] A list of entries to show, where the value is whether the item is pre-selected (or `"R"` for required/forced selected)
+        </li>
+        <li><span class="parameter">action</span>
+            <span class="types"><span class="type">function</span></span>
+         |string A function or `run` event that's called when a selection is made
+        </li>
+        <li><span class="parameter">selectChangeAction</span>
+            <span class="types"><span class="type">function</span></span>
+         |string|nil A function or `run` event that's called when the current selection is changed
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the text (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "textBox"></a>
+    <strong>textBox (win, x, y, width, height, text, fgColor, bgColor)</strong>
+    </dt>
+    <dd>
+    Creates a text box that wraps text and can have its text modified later.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">win</span>
+            <span class="types"><span class="type">window</span></span>
+         The parent window of the text box
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The X position of the box
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The Y position of the box
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         The width of the box
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+         The height of the box
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         The initial text to draw
+        </li>
+        <li><span class="parameter">fgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the text (defaults to white)
+        </li>
+        <li><span class="parameter">bgColor</span>
+            <span class="types"><span class="type">color</span></span>
+         |nil The color of the background (defaults to black)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        A function to redraw the window with new contents
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "timeout"></a>
+    <strong>timeout (time, action)</strong>
+    </dt>
+    <dd>
+    Runs a function or action after the specified time period, with optional canceling.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">time</span>
+            <span class="types"><span class="type">number</span></span>
+         The amount of time to wait for, in seconds
+        </li>
+        <li><span class="parameter">action</span>
+            <span class="types"><span class="type">function</span></span>
+         |string The function to call when the timer completes, or a `run` event to send
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-08-02 15:36:53 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -74,12 +74,15 @@ PrimeUI.horizontalLine(term.current(), 3, 3, #("Sample Text") + 2)
 PrimeUI.centerLabel(term.current(), 3, 5, 42, "Executing " .. selection .. "...")
 PrimeUI.borderBox(term.current(), 4, 7, 40, 1)
 local progress = PrimeUI.progressBar(term.current(), 4, 7, 40, nil, nil, true)
-local function updateProgress(i)
+local i = 0
+PrimeUI.interval(0.1, function()
     progress(i / 20)
-    if i < 20 then PrimeUI.timeout(0.1, function() updateProgress(i + 1) end)
-    else PrimeUI.resolve("updateProgress", "done") end
-end
-updateProgress(0)
+    i = i + 1
+    if i > 20 then
+        PrimeUI.resolve("updateProgress", "done")
+        return false
+    end
+end)
 PrimeUI.run()
 
 PrimeUI.clear()

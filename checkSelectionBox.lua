@@ -8,7 +8,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param y number The Y coordinate of the inside of the box
 ---@param width number The width of the inner box
 ---@param height number The height of the inner box
----@param selections {string: string|boolean} A list of entries to show, where the value is whether the item is pre-selected (or `"R"` for required/forced selected)
+---@param selections table<string,string|boolean> A list of entries to show, where the value is whether the item is pre-selected (or `"R"` for required/forced selected)
 ---@param action function|string|nil A function or `run` event that's called when a selection is made
 ---@param fgColor color|nil The color of the text (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
