@@ -29,8 +29,8 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor,
     win.setTextColor(fgColor)
     win.write(" " .. text .. " ")
     -- Get the screen position and add a click handler.
-    local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
     PrimeUI.addTask(function()
+        local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
         local buttonDown = false
         while true do
             local event, button, clickX, clickY = os.pullEvent()

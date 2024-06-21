@@ -16,11 +16,11 @@ function PrimeUI.clickRegion(win, x, y, width, height, action, periphName)
     expect(3, y, "number")
     expect(4, width, "number")
     expect(5, height, "number")
-    expect(6, action, "function", "string")
-    periphName = expect(7, periphName, "string", "nil")
-    -- Get the screen position and add a click handler.
-    local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
     PrimeUI.addTask(function()
+        expect(6, action, "function", "string")
+        periphName = expect(7, periphName, "string", "nil")
+        -- Get the screen position and add a click handler.
+        local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
         local buttonDown = false
         while true do
             local event, button, clickX, clickY = os.pullEvent()
@@ -28,7 +28,7 @@ function PrimeUI.clickRegion(win, x, y, width, height, action, periphName)
                 or (event == "mouse_down" and button == 1 and periphName == nil) then
                 -- Finish a click event.
                 if clickX >= screenX and clickX < screenX + width
-                    and clickY >= screenY and clickY < screenY + height + 1 then
+                    and clickY >= screenY and clickY < screenY + height then
                     -- Trigger the action.
                     if type(action) == "string" then
                         PrimeUI.resolve("clickRegion", action)
