@@ -16,9 +16,9 @@ function PrimeUI.clickRegion(win, x, y, width, height, action, periphName)
     expect(3, y, "number")
     expect(4, width, "number")
     expect(5, height, "number")
+    expect(6, action, "function", "string")
+    expect(7, periphName, "string", "nil")
     PrimeUI.addTask(function()
-        expect(6, action, "function", "string")
-        periphName = expect(7, periphName, "string", "nil")
         -- Get the screen position and add a click handler.
         local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
         local buttonDown = false
