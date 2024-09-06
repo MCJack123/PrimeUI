@@ -25,7 +25,7 @@ function PrimeUI.clickRegion(win, x, y, width, height, action, periphName)
         while true do
             local event, button, clickX, clickY = os.pullEvent()
             if (event == "monitor_touch" and periphName == button)
-                or (event == "mouse_down" and button == 1 and periphName == nil) then
+                or (event == "mouse_click" and button == 1 and periphName == nil) then
                 -- Finish a click event.
                 if clickX >= screenX and clickX < screenX + width
                     and clickY >= screenY and clickY < screenY + height then
