@@ -54,8 +54,7 @@ function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action,
     inner.setCursorPos(2, selected)
     inner.setCursorBlink(true)
     PrimeUI.setCursorWindow(inner)
-    -- Get screen coordinates & add run task.
-    local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
+    -- Run task.
     PrimeUI.addTask(function()
         local scrollPos = 1
         while true do
@@ -83,8 +82,12 @@ function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action,
                     end
                     inner.setCursorPos(2, selected)
                 end
-            elseif ev[1] == "mouse_scroll" and ev[3] >= screenX and ev[3] < screenX + width and ev[4] >= screenY and ev[4] < screenY + height then
-                dir = ev[2]
+            elseif ev[1] == "mouse_scroll" then
+                --- Check if the coordinates are in the scrollable window
+                local winx, winy = PrimeUI.getPosInWindow(outer, ev[3], ev[4])
+                if winx then
+                    dir = ev[2]
+                end
             end
             -- Scroll the screen if required.
             if dir and (selected + dir >= 1 and selected + dir <= nsel) then

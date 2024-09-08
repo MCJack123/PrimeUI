@@ -16,4 +16,5 @@ require "scrollBox"
 require "selectionBox"
 require "textBox"
 require "timeout"
+require "clickRegion"
 return PrimeUI

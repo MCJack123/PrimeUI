@@ -44,13 +44,16 @@ declare namespace PrimeUI {
     function setCursorWindow(win: Window | null | undefined): void;
 
     /**
-     * Gets the absolute position of a coordinate relative to a window.
-     * @param win The window to check
-     * @param x The relative X position of the point
-     * @param y The relative Y position of the point
-     * @return The absolute X and Y position of the window
+     * Returns the position of a point given in absolute coordinates relative to the specified window,
+     * or nil if this point is outside the window.
+     * Particularly useful when getting data from events.
+     * @param win window The window to check
+     * @param absx number The absolute X position of the point
+     * @param absy number The absolute Y position of the point
+     * @return number|nil x The X position of the point relative to the window, or nil if outside the window
+     * @return number|nil y The Y position of the point relative to the window, or nil if oustide the window
      */
-    function getWindowPos(win: ITerminal, x: number, y: number): LuaMultiReturn<[number, number]>;
+    function getPosInWindow(win: ITerminal, absx: number, absy: number): LuaMultiReturn<[number, number]>;
 
     /**
      * Runs the main loop, returning information on an action.

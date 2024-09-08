@@ -28,13 +28,14 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor,
     win.setBackgroundColor(bgColor)
     win.setTextColor(fgColor)
     win.write(" " .. text .. " ")
-    -- Get the screen position and add a click handler.
+    -- Add a click handler.
     PrimeUI.addTask(function()
-        local screenX, screenY = PrimeUI.getWindowPos(win, x, y)
         local buttonDown = false
         while true do
             local event, button, clickX, clickY = os.pullEvent()
-            if event == "mouse_click" and periphName == nil and button == 1 and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
+            -- Get the position of the click in the window
+            local winx, winy = PrimeUI.getPosInWindow(win, clickX, clickY)
+            if event == "mouse_click" and periphName == nil and button == 1 and winx and winx >= x and winx < x + #text + 2 and winy == y then
                 -- Initiate a click action (but don't trigger until mouse up).
                 buttonDown = true
                 -- Redraw the button with the clicked background color.
@@ -42,10 +43,10 @@ function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor,
                 win.setBackgroundColor(clickedColor)
                 win.setTextColor(fgColor)
                 win.write(" " .. text .. " ")
-            elseif (event == "monitor_touch" and periphName == button and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY)
+            elseif (event == "monitor_touch" and periphName == button and winx and winx >= x and winx < x + #text + 2 and winy == y)
                 or (event == "mouse_up" and button == 1 and buttonDown) then
                 -- Finish a click event.
-                if clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then
+                if winx >= x and winy < x + #text + 2 and winy == y then
                     -- Trigger the action.
                     if type(action) == "string" then
                         PrimeUI.resolve("button", action)

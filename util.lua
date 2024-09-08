@@ -45,21 +45,36 @@ do
         restoreCursor = win and win.restoreCursor
     end
 
-    --- Gets the absolute position of a coordinate relative to a window.
-    ---@param win window The window to check
-    ---@param x number The relative X position of the point
-    ---@param y number The relative Y position of the point
-    ---@return number x The absolute X position of the window
-    ---@return number y The absolute Y position of the window
-    function PrimeUI.getWindowPos(win, x, y)
-        if win == term then return x, y end
+    --- Returns the position of a point given in absolute coordinates relative to the specified window,
+    --- or nil if this point is outside the window.
+    --- Particularly useful when getting data from events.
+    --- @param win window The window to check
+    --- @param absx number The absolute X position of the point
+    --- @param absy number The absolute Y position of the point
+    --- @return number|nil x The X position of the point relative to the window, or nil if outside the window
+    --- @return number|nil y The Y position of the point relative to the window, or nil if oustide the window
+    function PrimeUI.getPosInWindow(win, absx, absy)
+        if win == term then return end
+        local wins = {}
+        -- local x, y = 1, 1
         while win ~= term.native() and win ~= term.current() do
-            if not win.getPosition then return x, y end
-            local wx, wy = win.getPosition()
-            x, y = x + wx - 1, y + wy - 1
+            table.insert(wins, win)
+            if not win.getPosition then break end
+            -- local wx, wy = win.getPosition()
+            -- local ww, wh = win.getSize()
+            -- x, y = x + wx - 1, y + wy - 1
             _, win = debug.getupvalue(select(2, debug.getupvalue(win.isColor, 1)), 1) -- gets the parent window through an upvalue
         end
-        return x, y
+        for i=#wins, 1, -1 do
+          win = wins[i]
+          local wx, wy = win.getPosition()
+          local ww, wh = win.getSize()
+          absx, absy = absx - wx + 1, absy - wy + 1
+          if absx < 1 or absy < 1 or absx >= ww + 1 or absy >= wh + 1 then
+              return nil
+          end
+        end
+        return absx, absy
     end
 
     --- Runs the main loop, returning information on an action.
