@@ -14,6 +14,7 @@ local expect = require "cc.expect".expect -- DO NOT COPY THIS LINE
 ---@param fgColor number|nil The color of scroll indicators (defaults to white)
 ---@param bgColor color|nil The color of the background (defaults to black)
 ---@return window inner The inner window to draw inside
+---@return fun(pos:number) scroll A function to manually set the scroll position of the window
 function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys, showScrollIndicators, fgColor, bgColor)
     expect(1, win, "table")
     expect(2, x, "number")
@@ -44,8 +45,8 @@ function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys
     -- Get the absolute position of the window.
     x, y = PrimeUI.getWindowPos(win, x, y)
     -- Add the scroll handler.
+    local scrollPos = 1
     PrimeUI.addTask(function()
-        local scrollPos = 1
         while true do
             -- Wait for next event.
             local ev = table.pack(os.pullEvent())
@@ -75,5 +76,23 @@ function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys
             end
         end
     end)
-    return inner
+    -- Make a function to allow external scrolling.
+    local function scroll(pos)
+        expect(1, pos, "number")
+        pos = math.floor(pos)
+        expect.range(pos, 1, innerHeight - height)
+        -- Scroll the window.
+        scrollPos = pos
+        inner.reposition(1, 2 - scrollPos)
+        -- Redraw scroll indicators if desired.
+        if showScrollIndicators then
+            outer.setBackgroundColor(bgColor)
+            outer.setTextColor(fgColor)
+            outer.setCursorPos(width, 1)
+            outer.write(scrollPos > 1 and "\30" or " ")
+            outer.setCursorPos(width, height)
+            outer.write(scrollPos < innerHeight - height and "\31" or " ")
+        end
+    end
+    return inner, scroll
 end
