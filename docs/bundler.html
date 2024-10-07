@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PrimeUI Bundler</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <style>
+            #code {
+                font-family: monospace;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>PrimeUI Bundler</h1>
+            <p>This page automatically generates a PrimeUI blob with the components you need. Simply select the components you want included, and then copy the generated code to the top of your program. Then write your code after the generated blob.</p>
+            <div class="row">
+                <div class="col-md-auto">
+                    <p>Components to include:</p>
+                    <form id="components">
+                        <button type="button" class="btn btn-primary" id="generate">Generate</button>
+                    </form>
+                </div>
+                <div class="col">
+                    <textarea id="code" readonly wrap="off"></textarea>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            let components = [];
+
+            async function generate() {
+                document.getElementById("generate").disabled = "";
+                let code = document.getElementById("code");
+                let util_res = await fetch("https://raw.githubusercontent.com/MCJack123/PrimeUI/master/util.lua");
+                let util = await util_res.text();
+                let text = util.replace(/-- DO NOT COPY THIS LINE.*/s, "");
+                for (const name of components) {
+                    if (document.getElementById("component-" + name).checked) {
+                        let res = await fetch("https://raw.githubusercontent.com/MCJack123/PrimeUI/master/" + name + ".lua");
+                        let t = await res.text();
+                        text += t.match(/\n\n(.*)/s)[1];
+                        if (!text.endsWith("\n\n")) text += "\n";
+                        if (!text.endsWith("\n\n")) text += "\n";
+                    }
+                }
+                code.innerHTML = text + "-- YOUR CODE HERE\n";
+                document.getElementById("generate").disabled = null;
+            }
+
+            async function init() {
+                const res = await fetch("https://api.github.com/repos/MCJack123/PrimeUI/contents");
+                const json = await res.json();
+                for (const ent of json) {
+                    if (ent.name.match(/\.lua$/) && ent.name != "init.lua" && ent.name != "util.lua") {
+                        const name = ent.name.match(/^[a-zA-Z]+/);
+                        components.push(name);
+                        let check = document.createElement("div");
+                        check.class = "mb-3 form-check";
+                        let input = document.createElement("input");
+                        input.type = "checkbox";
+                        input.id = "component-" + name;
+                        input.class = "form-check-input";
+                        check.appendChild(input);
+                        let label = document.createElement("label");
+                        label.class = "form-check-label";
+                        label.htmlFor = "component-" + name;
+                        label.innerText = name;
+                        check.appendChild(label);
+                        document.getElementById("components").insertBefore(check, document.getElementById("generate"));
+                    }
+                }
+                document.getElementById("generate").onclick = generate;
+            }
+
+            init();
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+</html>
