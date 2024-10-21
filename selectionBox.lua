@@ -30,7 +30,7 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
         if type(v) ~= "string" then error("bad item " .. i .. " in entries table (expected string, got " .. type(v), 2) end
     end
     -- Create container window.
-    local entrywin = window.create(win, x, y, width - 1, height)
+    local entrywin = window.create(win, x, y, width, height)
     local selection, scroll = 1, 1
     -- Create a function to redraw the entries on screen.
     local function drawEntries()
@@ -57,10 +57,12 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
             entrywin.write(#e > width - 1 and e:sub(1, width - 4) .. "..." or e)
         end
         -- Draw scroll arrows.
+        entrywin.setBackgroundColor(bgColor)
+        entrywin.setTextColor(fgColor)
         entrywin.setCursorPos(width, 1)
-        entrywin.write(scroll > 1 and "\30" or " ")
+        entrywin.write("\30")
         entrywin.setCursorPos(width, height)
-        entrywin.write(scroll < #entries - height + 1 and "\31" or " ")
+        entrywin.write("\31")
         -- Send updates to the screen.
         entrywin.setVisible(true)
     end
@@ -69,29 +71,93 @@ function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectC
     -- Add a task for selection keys.
     PrimeUI.addTask(function()
         while true do
-            local _, key = os.pullEvent("key")
-            if key == keys.down and selection < #entries then
-                -- Move selection down.
-                selection = selection + 1
-                if selection > scroll + height - 1 then scroll = scroll + 1 end
-                -- Send action if necessary.
-                if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
-                elseif selectChangeAction then selectChangeAction(selection) end
-                -- Redraw screen.
-                drawEntries()
-            elseif key == keys.up and selection > 1 then
-                -- Move selection up.
-                selection = selection - 1
-                if selection < scroll then scroll = scroll - 1 end
-                -- Send action if necessary.
-                if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
-                elseif selectChangeAction then selectChangeAction(selection) end
-                -- Redraw screen.
-                drawEntries()
-            elseif key == keys.enter then
-                -- Select the entry: send the action.
-                if type(action) == "string" then PrimeUI.resolve("selectionBox", action, entries[selection])
-                else action(entries[selection]) end
+            local event, key, cx, cy = os.pullEvent()
+            if event == "key" then
+                if key == keys.down and selection < #entries then
+                    -- Move selection down.
+                    selection = selection + 1
+                    if selection > scroll + height - 1 then scroll = scroll + 1 end
+                    -- Send action if necessary.
+                    if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                    elseif selectChangeAction then selectChangeAction(selection) end
+                    -- Redraw screen.
+                    drawEntries()
+                elseif key == keys.up and selection > 1 then
+                    -- Move selection up.
+                    selection = selection - 1
+                    if selection < scroll then scroll = scroll - 1 end
+                    -- Send action if necessary.
+                    if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                    elseif selectChangeAction then selectChangeAction(selection) end
+                    -- Redraw screen.
+                    drawEntries()
+                elseif key == keys.enter then
+                    -- Select the entry: send the action.
+                    if type(action) == "string" then PrimeUI.resolve("selectionBox", action, entries[selection])
+                    else action(entries[selection]) end
+                end
+            elseif event == "mouse_click" and key == 1 then
+                -- Handle clicking the scroll arrows.
+                local wx, wy = PrimeUI.getWindowPos(entrywin, 1, 1)
+                if cx == wx + width - 1 then
+                    if cy == wy and selection > 1 then
+                        -- Move selection up.
+                        selection = selection - 1
+                        if selection < scroll then scroll = scroll - 1 end
+                        -- Send action if necessary.
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        -- Redraw screen.
+                        drawEntries()
+                    elseif cy == wy + height - 1 and selection < #entries then
+                        -- Move selection down.
+                        selection = selection + 1
+                        if selection > scroll + height - 1 then scroll = scroll + 1 end
+                        -- Send action if necessary.
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        -- Redraw screen.
+                        drawEntries()
+                    end
+                elseif cx >= wx and cx < wx + width - 1 and cy >= wy and cy < wy + height then
+                    local sel = scroll + (cy - wy)
+                    if sel == selection then
+                        -- Select the entry: send the action.
+                        if type(action) == "string" then PrimeUI.resolve("selectionBox", action, entries[selection])
+                        else action(entries[selection]) end
+                    else
+                        selection = sel
+                        -- Send action if necessary.
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        -- Redraw screen.
+                        drawEntries()
+                    end
+                end
+            elseif event == "mouse_scroll" then
+                -- Handle mouse scrolling.
+                local wx, wy = PrimeUI.getWindowPos(entrywin, 1, 1)
+                if cx >= wx and cx < wx + width and cy >= wy and cy < wy + height then
+                    if key < 0 and selection > 1 then
+                        -- Move selection up.
+                        selection = selection - 1
+                        if selection < scroll then scroll = scroll - 1 end
+                        -- Send action if necessary.
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        -- Redraw screen.
+                        drawEntries()
+                    elseif key > 0 and selection < #entries then
+                        -- Move selection down.
+                        selection = selection + 1
+                        if selection > scroll + height - 1 then scroll = scroll + 1 end
+                        -- Send action if necessary.
+                        if type(selectChangeAction) == "string" then PrimeUI.resolve("selectionBox", selectChangeAction, selection)
+                        elseif selectChangeAction then selectChangeAction(selection) end
+                        -- Redraw screen.
+                        drawEntries()
+                    end
+                end
             end
         end
     end)
