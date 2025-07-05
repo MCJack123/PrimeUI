@@ -24,7 +24,6 @@ function PrimeUI.progressBar(win, x, y, width, fgColor, bgColor, useShade)
         if progress < 0 or progress > 1 then error("bad argument #1 (value out of range)", 2) end
         -- Draw the active part of the bar.
         win.setCursorPos(x, y)
-        win.setBackgroundColor(bgColor)
         win.setBackgroundColor(fgColor)
         win.write((" "):rep(math.floor(progress * width)))
         -- Draw the inactive part of the bar, using shade if desired.
